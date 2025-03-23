@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-50HFNDZW4E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-50HFNDZW4E');
+</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>祝李老师毕业快乐！</title>
+  <style>
+    :root {
+      --primary-color: #2193b0;
+      --secondary-color: #6dd5ed;
+      --white-bg: rgba(255, 255, 255, 0.2);
+      --transition-duration: 0.5s;
+    }
+    /* 优化背景动画：使用背景尺寸和位移来制造更平滑的渐变效果 */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      text-align: center;
+      background: linear-gradient(45deg, var(--secondary-color), var(--primary-color), var(--secondary-color));
+      background-size: 400% 400%;
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      animation: bgAnimation 15s ease infinite;
+    }
+    @keyframes bgAnimation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+    .container {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+    /* 优化页面切换：使用平滑的透明度与位移过渡 */
+    .section {
+      width: 90%;
+      max-width: 800px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity var(--transition-duration) ease, transform var(--transition-duration) ease;
+    }
+    .section.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    h1 {
+      font-size: 30px; /* 字体稍微小一些 */
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+      background: var(--white-bg);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+      -webkit-backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      padding: 10px 20px;
+      border-radius: 10px;
+      margin: 20px;
+    }
+    /* 将第一页和最后一页的标题置于烟花效果（canvas）之上 */
+    #section1 h1, #section9 h1 {
+      position: relative;
+      z-index: 2;
+    }
+    p {
+      font-size: 20px;
+      opacity: 0.95;
+      margin: 10px;
+    }
+    /* 优化按钮：更圆润的边角，渐变背景与更平滑的悬停效果 */
+    button {
+      margin-top: 20px;
+      padding: 12px 25px;
+      font-size: 18px;
+      border: none;
+      border-radius: 25px;
+      background: linear-gradient(45deg, #fff, var(--primary-color));
+      color: var(--primary-color);
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.3s ease, color 0.3s ease;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    button:disabled {
+      background: #ccc;
+      color: #666;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+    button:hover:not(:disabled) {
+      transform: scale(1.05);
+      background: linear-gradient(45deg, var(--primary-color), #fff);
+      color: #fff;
+    }
+    .footer {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+      color: #fff;
+      font-size: 14px;
+      opacity: 0.85;
+    }
+    .checkbox-container, .input-container {
+      margin-top: 20px;
+    }
+    .input-container input {
+      padding: 8px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      outline: none;
+      transition: border-color 0.3s ease;
+    }
+    .input-container input:focus {
+      border-color: var(--primary-color);
+    }
+    img {
+      width: 50%;
+      border-radius: 10px;
+      margin-top: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+    }
+    /* Canvas 全屏动画 */
+    #fireworksCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* 新增：第一页烟花效果 canvas 样式 */
+    #fireworksCanvasFirst {
+      position: fixed;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* 新增：漂亮的等待进度条样式 */
+    .progress-container {
+      width: 80%;
+      background-color: rgba(255,255,255,0.2);
+      border-radius: 10px;
+      margin: 10px auto;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+    }
+    .progress-bar {
+      height: 10px;
+      width: 100%;
+      background: linear-gradient(270deg, var(--primary-color), var(--secondary-color), var(--primary-color));
+      background-size: 400% 400%;
+      animation: progress-animation 3s ease infinite;
+    }
+    @keyframes progress-animation {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+  </style>
+</head>
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-50HFNDZW4E"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-50HFNDZW4E');
+</script>
+<body>
+  <div class="container" id="container">
+    <!-- 第一页 -->
+    <div class="section show" id="section1">
+      <h1>祝李老师毕业快乐！🎓🎉</h1>
+      <p>From 甘弦朋 邓杰</p>
+      <p>website start time 2025/3/16</p>
+      <p>Last updated time 2025/3/23</p>
+      <button onclick="nextSlide()">下一页</button>
+      <!-- 在第一页添加烟花 canvas -->
+      <canvas id="fireworksCanvasFirst"></canvas>
+    </div>
+
+    <!-- 新增的小游戏页面（插入在第一页和原第二页之间） -->
+    <div class="section" id="section2" style="animation-delay: 0.3s;">
+      <h1>等待时活动下手指</h1>
+      <p>等待数据上传谷歌云服务器..</p>
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+      <p>等待后续分层动画加载完成..</p>
+      <div class="progress-container">
+        <div class="progress-bar"></div>
+      </div>
+      <p>点击下方按钮以加速进程</p>
+      <p>点击次数：<span id="scoreDisplay">0</span></p>
+      <button id="gameButton" onclick="gameClick()">点我加速</button>
+      <p id="timerDisplay">时间剩余: 10秒</p>
+      <button onclick="nextSlide()" id="nextButtonGame" style="display:none;">下一页</button>
+    </div>
+
+    <!-- 原第二页，现为第三页 -->
+    <div class="section" id="section3" style="animation-delay: 0.6s;">
+      <h1>人机验证注意</h1>
+      <p>点击“已确认”方可进行下一步</p>
+      <p>点击即代表您同意上述内容</p>
+      <div class="checkbox-container">
+        <input type="checkbox" id="confirm1" onchange="enableNextButton('confirm1', 'nextButton1')"> 
+        <label for="confirm1">已确认</label>
+      </div>
+      <button onclick="nextSlide()" id="nextButton1" disabled>下一页</button>
+    </div>
+
+    <!-- 密码验证页面，现为第四页 -->
+    <div class="section" id="section4" style="animation-delay: 0.9s;">
+      <h1>请输入密码</h1>
+      <p>*因为买不起私人服务器所以用公共网络搭建*</p>
+      <p>*为避免此公共网站遭受恶意攻击登录所以设置密码*</p>
+      <div class="input-container">
+        <input type="password" id="passwordInput" placeholder="在此输入密码以继续" oninput="validatePassword()" onkeypress="handleEnter(event)">
+      </div>
+      <button onclick="nextSlide()" id="nextButton2" disabled>下一页</button>
+    </div>
+
+    <!-- 回忆成就页面，现为第五页 -->
+    <div class="section" id="section5" style="animation-delay: 1.2s;">
+      <h1>回忆成就</h1>
+      <p>声乐部门公认的唱歌第一</p>
+      <p>钢琴部门弹钢琴第一</p>
+      <p>体育体能第一</p>
+      <p>学习成绩第一</p>
+      <p>吃饭第一</p>
+      <p>...第一</p>
+      <p>是我们学习的榜样</p>
+      <div class="checkbox-container">
+        <input type="checkbox" id="confirm2" onchange="enableNextButton('confirm2', 'nextButton3')"> 
+        <label for="confirm2">已确认</label>
+      </div>
+      <button onclick="nextSlide()" id="nextButton3" disabled>下一页</button>
+    </div>
+
+    <!-- GAN 页面，现为第六页 -->
+    <div class="section" id="section6" style="animation-delay: 1.5s;">
+      <h1>GAN</h1>
+      <p>好好吃饭，按时睡觉。</p>
+      <p>家人闲坐，灯火可亲。</p>
+      <p>前路光明，一切顺利。</p>
+      <div class="checkbox-container">
+        <input type="checkbox" id="confirm3" onchange="enableNextButton('confirm3', 'nextButton4')"> 
+        <label for="confirm3">已确认</label>
+      </div>
+      <button onclick="nextSlide()" id="nextButton4" disabled>下一页</button>
+    </div>
+
+    <!-- DENG 页面，现为第七页 -->
+    <div class="section" id="section7" style="animation-delay: 1.8s;">
+      <h1>DENG</h1>
+      <p>希君生羽翼,</p>
+      <p>一化北冥鱼。</p>
+      <button onclick="nextSlide()">下一页</button>
+    </div>
+
+    <!-- 图片展示页面，现为第八页 -->
+    <div class="section" id="section8" style="animation-delay: 2.1s;">
+      <h1>特别的瞬间</h1>
+      <p>这几张很好看！📷摄影师@GAN</p>
+      <p>图片加载失败就刷新或者换网络环境</p>
+      <p>实在不行买台新手机</p>
+      <img src="7444be2a3315b3ec849c7e19b569863.jpg" alt="lbr吃饭照片合集">
+      <button onclick="nextSlide()">下一页</button>
+    </div>
+
+    <!-- 毕业祝福页面，现为第九页 -->
+    <div class="section" id="section9" style="animation-delay: 2.4s;">
+      <h1>祝李老师毕业快乐！</h1>
+      <p>开开心心，未来可期！🎉</p>
+      <p>顺顺利利，学业有成！🎉</p>
+      <button onclick="goToHome()">回到首页</button>
+      <button onclick="nextSlide()">查看制作人员名单</button>
+      <canvas id="fireworksCanvas"></canvas>
+    </div>
+
+    <!-- 制作人员页面，现为第十页 -->
+    <div class="section" id="section10" style="animation-delay: 2.7s;">
+      <h1>制作人员</h1>
+      <p>代码设计与开发: GAN</p>
+      <p>动画改进与优化: GAN</p>
+      <p>文字来源: GAN DENG</p>
+      <p>图片来源: GAN DENG</p>
+      <button onclick="prevSlide()">上一页</button>
+      <button onclick="nextSlide()">不要点我</button>
+    </div>
+
+    <!-- 新增：彩蛋页面，现为第十一页 -->
+    <div class="section" id="section11" style="animation-delay: 3.0s;">
+      <h1>彩蛋</h1>
+      <p>你发现了隐藏的彩蛋页面！</p>
+      <p>我先想想这里放点什么照片</p>
+      <p>后续继续维护服务器和网站</p>
+      <button onclick="prevSlide()">上一页</button>
+      <button onclick="goToHome()">回到首页</button>
+    </div>
+
+    <div class="footer">
+      ©2025 运行代码由 GAN 设计与开发
+    </div>
+  </div>
+
+  <script>
+    let currentSection = 1;
+    const sections = document.querySelectorAll('.section');
+
+    function showSection(sectionNumber) {
+      sections.forEach(section => {
+        section.classList.remove('show');
+        section.style.display = "none";
+      });
+      const current = document.getElementById(`section${sectionNumber}`);
+      current.style.display = "flex";
+      setTimeout(() => {
+        current.classList.add('show');
+      }, 100);
+    }
+
+    // 显示初始页面
+    showSection(currentSection);
+    // 启动第一页的烟花效果
+    startFireworks("fireworksCanvasFirst");
+
+    function nextSlide() {
+      const current = document.getElementById(`section${currentSection}`);
+      current.classList.remove('show');
+      setTimeout(() => {
+        current.style.display = "none";
+        currentSection++;
+        const next = document.getElementById(`section${currentSection}`);
+        next.style.display = "flex";
+        setTimeout(() => {
+          next.classList.add('show');
+          // 如果进入小游戏页面，则启动游戏
+          if (currentSection === 2) {
+            startGame();
+          }
+        }, 100);
+        window.scrollTo(0, 0);
+        if (currentSection === 9) {
+          startFireworks();
+        }
+      }, 300);
+    }
+
+    function prevSlide() {
+      const current = document.getElementById(`section${currentSection}`);
+      current.classList.remove('show');
+      setTimeout(() => {
+        current.style.display = "none";
+        currentSection--;
+        const prev = document.getElementById(`section${currentSection}`);
+        prev.style.display = "flex";
+        setTimeout(() => {
+          prev.classList.add('show');
+        }, 100);
+        window.scrollTo(0, 0);
+      }, 300);
+    }
+
+    function goToHome() {
+      const current = document.getElementById(`section${currentSection}`);
+      current.classList.remove('show');
+      setTimeout(() => {
+        current.style.display = "none";
+        currentSection = 1;
+        const home = document.getElementById(`section${currentSection}`);
+        home.style.display = "flex";
+        setTimeout(() => {
+          home.classList.add('show');
+        }, 100);
+        window.scrollTo(0, 0);
+        // 重启第一页烟花效果
+        startFireworks("fireworksCanvasFirst");
+      }, 300);
+    }
+
+    function enableNextButton(checkboxId, buttonId) {
+      document.getElementById(buttonId).disabled = !document.getElementById(checkboxId).checked;
+    }
+
+    function validatePassword() {
+      document.getElementById("nextButton2").disabled = document.getElementById("passwordInput").value !== "04240417";
+    }
+
+    function handleEnter(event) {
+      if (event.key === "Enter") validatePassword();
+    }
+
+    // 小游戏相关代码
+    let gameScore = 0;
+    let gameTime = 10; // 游戏时间，单位：秒
+    let gameTimer;
+
+    function startGame() {
+      // 重置游戏分数和时间
+      gameScore = 0;
+      gameTime = 10;
+      document.getElementById("scoreDisplay").innerText = gameScore;
+      document.getElementById("timerDisplay").innerText = "时间剩余: " + gameTime + "秒";
+      document.getElementById("gameButton").disabled = false;
+      document.getElementById("nextButtonGame").style.display = "none";
+
+      // 清除之前的计时器
+      if (gameTimer) clearInterval(gameTimer);
+
+      // 启动倒计时
+      gameTimer = setInterval(() => {
+        gameTime--;
+        document.getElementById("timerDisplay").innerText = "时间剩余: " + gameTime + "秒";
+        if (gameTime <= 0) {
+          clearInterval(gameTimer);
+          endGame();
+        }
+      }, 1000);
+    }
+
+    function gameClick() {
+      gameScore++;
+      document.getElementById("scoreDisplay").innerText = gameScore;
+    }
+
+    function endGame() {
+      document.getElementById("gameButton").disabled = true;
+      // 游戏结束后显示下一页按钮
+      document.getElementById("nextButtonGame").style.display = "inline-block";
+    }
+
+    // 烟花动画代码，新增参数 canvasId（默认为 "fireworksCanvas"）
+    function startFireworks(canvasId = "fireworksCanvas") {
+      const canvas = document.getElementById(canvasId);
+      if (!canvas) {
+        console.error("Canvas 元素未找到: " + canvasId);
+        return;
+      }
+      const ctx = canvas.getContext("2d");
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      
+      const particles = [];
+      function Particle(x, y, color) {
+        this.x = x;
+        this.y = y;
+        this.color = color;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = Math.random() * 4 - 2;
+        this.speedY = Math.random() * 4 - 2;
+        this.opacity = 1;
+      }
+      Particle.prototype.update = function() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        this.opacity -= 0.02;
+      };
+      Particle.prototype.draw = function() {
+        ctx.globalAlpha = this.opacity;
+        ctx.fillStyle = this.color;
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
+      };
+      
+      function createFirework(x, y) {
+        const colors = ["red", "yellow", "blue", "green", "purple", "orange"];
+        for (let i = 0; i < 50; i++) {
+          particles.push(new Particle(x, y, colors[Math.floor(Math.random() * colors.length)]));
+        }
+      }
+      
+      function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (let i = 0; i < particles.length; i++) {
+          particles[i].update();
+          particles[i].draw();
+          if (particles[i].opacity <= 0) {
+            particles.splice(i, 1);
+            i--;
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      
+      setInterval(() => {
+        createFirework(Math.random() * canvas.width, Math.random() * canvas.height);
+      }, 500);
+      
+      animate();
+    }
+  </script>
+</body>
+</html>
