@@ -279,6 +279,8 @@
       <p>否则无法进行下一步</p>
       <p>*仅支持iOS16以上版本*</p>
       <p>更新内容：优化了切换页面的流畅度</p>
+      <p>已知问题：摄像头调用时间过长设备发热</p>
+      <p>AI运行库加载不正确无法启动</p>
       <button onclick="nextSlide()">下一页</button>
       <!-- 烟花 canvas -->
       <canvas id="fireworksCanvasFirst"></canvas>
@@ -301,7 +303,7 @@
 
     <!-- 定位页面（原 section2，现为 section4） -->
     <div class="section" id="section4" style="animation-delay: 0.9s;">
-      <h1>先看一下你在哪里</h1>
+      <h1>了解一下你的位置</h1>
       <p id="locationStatus">正在获取您的位置...</p>
       <div id="mapWrapper" style="width:100%; margin:20px 0; position:relative;">
         <div id="map" style="width:100%; height:400px; display:none;"></div>
@@ -319,7 +321,7 @@
 
     <!-- 电子合照页面（原 section4，现为 section6） -->
     <div class="section" id="section6" style="animation-delay: 1.5s;">
-      <h1>拍个照</h1>
+      <h1>拍照存档</h1>
       <p>请允许调用摄像头进行拍照</p>
       <video id="video" width="320" height="240" autoplay playsinline style="border:1px solid #ccc;"></video>
       <br>
@@ -331,7 +333,7 @@
 
     <!-- 小游戏页面（原 section5，现为 section7） -->
     <div class="section" id="section7" style="animation-delay: 1.8s;">
-      <h1>等待时活动下手指</h1>
+      <h1>请等待片刻</h1>
       <p>等待数据上传谷歌云服务器..</p>
       <div class="progress-container">
         <div class="progress-bar"></div>
@@ -351,6 +353,7 @@
     <div class="section" id="section8" style="animation-delay: 2.1s;">
       <h1>人机验证注意</h1>
       <p>我确认，我已知晓了必要的隐私披露声明并给予最终用户授权，同意网站所有者收集用户的数据并进行相关处理，包括将此类数据与 Google Analytics 从网站和/或应用媒体资源收集的访问信息相关联。</p>
+      <p>本网站遵守Google相关法律政策</p>
       <p>点击即代表您同意上述内容</p>
       <div class="checkbox-container">
         <input type="checkbox" id="confirm1" onchange="enableNextButton('confirm1', 'nextButton1')"> 
